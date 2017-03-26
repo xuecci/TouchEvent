@@ -36,6 +36,7 @@ public class TorchView extends View {
     private Paint mPaint;
     private int mColor[] = {0xffc17b41,0xccc17b41,0x99c17b41,0x66c17b41,0x33c17b41};
     private boolean mIsTorchOn = false;
+    private Paint mLinePaint;
 
     public float getFactor0() {
         return factor0;
@@ -163,6 +164,9 @@ public class TorchView extends View {
             canvas.drawCircle(mWidth,mHeight/2,(mRadius+mBordersize*(i+1))*mFactor,mPaint);
             canvas.restore();
 
+            mLinePaint.setColor(mColor[i]);
+            canvas.drawCircle(mWidth,mHeight/2,(mRadius+mBordersize*(i+1))*mFactor,mLinePaint);
+
             canvas.save();
             canvas.clipRect(0,0,mWidth,mHeight);
             mPath.reset();
@@ -181,6 +185,9 @@ public class TorchView extends View {
         canvas.clipPath(mPath,Region.Op.REPLACE);
         mIcon.draw(canvas);
         canvas.restore();
+
+        mLinePaint.setColor(mColor[0]);
+        canvas.drawCircle(mWidth,mHeight/2,mRadius*factor0,mLinePaint);
     }
 
     private void init() {
@@ -197,6 +204,13 @@ public class TorchView extends View {
         mPaint.setAntiAlias(true);
 
         mPath = new Path();
+
+        mLinePaint = new Paint();
+        mLinePaint.setStyle(Paint.Style.STROKE);
+        mLinePaint.setStrokeWidth(1);
+        mLinePaint.setDither(true);
+        mLinePaint.setFilterBitmap(true);
+        mLinePaint.setAntiAlias(true);
     }
 
     private void initAnimator() {
